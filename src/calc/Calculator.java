@@ -4,6 +4,7 @@ import java.util.*;
 
 import static java.lang.Double.NaN;
 import static java.lang.Math.pow;
+import static java.lang.System.out;
 
 
 /*
@@ -100,8 +101,16 @@ class Calculator {
     // ---------- Tokenize -----------------------
 
     public List<String> tokenize(String expr) {
-        return null;   // TODO
+        out.println(expr);
+
+        String[] exprArr = expr.split(" ");
+        List<String> res = new ArrayList<>(Arrays.asList(exprArr));
+        res.removeIf(s -> s.equals(" "));
+
+        out.println(res);
+        return res;
     }
 
     // TODO Possibly more methods
+
 }
