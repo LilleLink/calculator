@@ -103,9 +103,17 @@ class Calculator {
     public List<String> tokenize(String expr) {
         out.println(expr);
 
+        //Below does not work
+
         String[] exprArr = expr.split(" ");
         List<String> res = new ArrayList<>(Arrays.asList(exprArr));
         res.removeIf(s -> s.equals(" "));
+
+        // Best way:
+        // 1. Remove all spaces
+        // Start counting if current is numerical, stop when operator. Add to list
+        // Add operator to list
+        // Continue
 
         out.println(res);
         return res;
