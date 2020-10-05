@@ -101,24 +101,48 @@ class Calculator {
     // ---------- Tokenize -----------------------
 
     public List<String> tokenize(String expr) {
-        out.println(expr);
+        out.println("Tokenizing expression: "+expr);
 
         //Below does not work
 
-        String[] exprArr = expr.split(" ");
-        List<String> res = new ArrayList<>(Arrays.asList(exprArr));
-        res.removeIf(s -> s.equals(" "));
+        List<String> res = new ArrayList<>();
+        char[] exprArr = expr.toCharArray();
+        for (int i = 0; i < expr.length(); i++) {
+            if (Character.isDigit(exprArr[i])) {
+                // Number is [i,stopIndex]
+                int stopIndex = extractNumber(i, exprArr);
+                String s = getArrayPart(i, stopIndex, exprArr);
+                res.add(s);
+                i = stopIndex;
+            } else if (!Character.isDigit(exprArr[i]) && !Character.isWhitespace(exprArr[i])) {
+                res.add(String.valueOf(exprArr[i]));
+            }
+        }
 
         // Best way:
-        // 1. Remove all spaces
         // Start counting if current is numerical, stop when operator. Add to list
         // Add operator to list
         // Continue
 
-        out.println(res);
+        out.println("Result of tokenization: "+res);
         return res;
     }
 
-    // TODO Possibly more methods
+    private String getArrayPart(int i, int stopIndex, char[] exprArr) {
+        StringBuilder s = new StringBuilder();
+        for(int index = i; index <= stopIndex; index++) {
+            s.append(exprArr[index]);
+        }
+        return s.toString();
+    }
+
+    private int extractNumber(int startIndex, char[] exprArr) {
+        for(int i = startIndex; i < exprArr.length; i++) {
+            if(!Character.isDigit(exprArr[i]) || i == exprArr.length-1) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
 }
