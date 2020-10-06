@@ -67,9 +67,32 @@ class Calculator {
     // ------- Infix 2 Postfix ------------------------
 
     public List<String> infix2Postfix(List<String> tokens) {
-        return null; // TODO
+        Deque<String> stack = new ArrayDeque<>();
+        List<String> postFix = new ArrayList<>();
+
+        for (int i = 0;i < tokens.size(); i++) {
+            String current = tokens.get(i);
+            if (isNumber(current)) {    // If current is a number, add to postfix
+                postFix.add(current);
+            } else if (OPERATORS.contains(current)) { // If current is an operator
+
+            } else if (current.equals("(")) {
+                stack.push(current);
+            } else if (current.equals(")")) {
+                while(!stack.peek().equals("(")) {
+                    postFix.add(stack.pop());
+                }
+            }
+        }
+
+
+        return null;
     }
 
+    public boolean isNumber(String s) {
+        return s.equals("0") || s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4") || s.equals("5")
+                || s.equals("6") || s.equals("7") || s.equals("8") || s.equals("9");
+    }
 
     int getPrecedence(String op) {
         if ("+-".contains(op)) {
