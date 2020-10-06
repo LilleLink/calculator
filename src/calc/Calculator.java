@@ -109,11 +109,12 @@ class Calculator {
         char[] exprArr = expr.toCharArray();
         for (int i = 0; i < expr.length(); i++) {
             if (Character.isDigit(exprArr[i])) {
-                // Number is [i,stopIndex]
+                // Number is [i,stopIndex)
                 int stopIndex = extractNumber(i, exprArr);
                 String s = getArrayPart(i, stopIndex, exprArr);
                 res.add(s);
-                i = stopIndex;
+                if(stopIndex-i > 1)
+                    i = stopIndex-1;
             } else if (!Character.isDigit(exprArr[i]) && !Character.isWhitespace(exprArr[i])) {
                 res.add(String.valueOf(exprArr[i]));
             }
@@ -130,7 +131,7 @@ class Calculator {
 
     private String getArrayPart(int i, int stopIndex, char[] exprArr) {
         StringBuilder s = new StringBuilder();
-        for(int index = i; index <= stopIndex; index++) {
+        for(int index = i; index < stopIndex; index++) {
             s.append(exprArr[index]);
         }
         return s.toString();
@@ -138,8 +139,10 @@ class Calculator {
 
     private int extractNumber(int startIndex, char[] exprArr) {
         for(int i = startIndex; i < exprArr.length; i++) {
-            if(!Character.isDigit(exprArr[i]) || i == exprArr.length-1) {
+            if(!Character.isDigit(exprArr[i])) {
                 return i;
+            } else if(i == exprArr.length-1) {
+                return exprArr.length;
             }
         }
         return -1;
