@@ -70,8 +70,7 @@ class Calculator {
         Deque<String> stack = new ArrayDeque<>();
         List<String> postFix = new ArrayList<>();
 
-        for (int i = 0;i < tokens.size(); i++) {
-            String current = tokens.get(i);
+        for (String current : tokens) {
             if (isNumber(current)) {    // If current is a number, add to postfix
                 postFix.add(current);
             } else if (OPERATORS.contains(current)) { // If current is an operator
@@ -97,7 +96,7 @@ class Calculator {
                 stack.push(current);
 
             } else if (current.equals(")")) { // If right parenthesis
-                while(!stack.peek().equals("(")) {
+                while (!stack.peek().equals("(")) {
                     if (stack.isEmpty()) {
                         throw new IllegalArgumentException(MISSING_OPERATOR);
                     }
