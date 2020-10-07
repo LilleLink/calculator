@@ -74,20 +74,16 @@ class Calculator {
             if (isNumber(current)) {    // If current is a number, add to postfix
                 postFix.add(current);
             } else if (OPERATORS.contains(current)) { // If current is an operator
-
                 while (!stack.isEmpty()) {
 
                     if (getPrecedence(stack.peek()) > getPrecedence(current)) {
-                        postFix.add(stack.pop());
-                        break;
+                        popToList(stack, postFix);
                     } else if (getPrecedence(stack.peek()) == getPrecedence(current)) {
                         if (getAssociativity(current) == Assoc.LEFT) {
-                            postFix.add(stack.pop());
-                            break;
+                            popToList(stack, postFix);
                         }
                     } else if (!stack.peek().equals("(")) {
-                        stack.push(current);
-                        break;
+                        popToList(stack, postFix);
                     }
 
                 }
@@ -114,6 +110,12 @@ class Calculator {
         }
 
         return postFix;
+    }
+
+    private void popToList(Deque<String> stack, List<String> postFix) {
+        while(!stack.isEmpty()) {
+            postFix.add(stack.pop());
+        }
     }
 
     public boolean isNumber(String s) {
