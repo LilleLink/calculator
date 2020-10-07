@@ -79,12 +79,15 @@ class Calculator {
 
                     if (getPrecedence(stack.peek()) > getPrecedence(current)) {
                         postFix.add(stack.pop());
+                        break;
                     } else if (getPrecedence(stack.peek()) == getPrecedence(current)) {
                         if (getAssociativity(current) == Assoc.LEFT) {
                             postFix.add(stack.pop());
+                            break;
                         }
                     } else if (!stack.peek().equals("(")) {
-                        postFix.add(stack.pop());
+                        stack.push(current);
+                        break;
                     }
 
                 }
