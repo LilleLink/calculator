@@ -41,9 +41,31 @@ class Calculator {
     // ------  Evaluate RPN expression -------------------
 
     public double evalPostfix(List<String> postfix) {
-        return 0;  // TODO
-    }
 
+        Deque<Double> stack = new ArrayDeque<>();
+        double res = 0;
+
+        for(String s : postfix) {
+
+            if (isNumber(s)) {
+                stack.push(Double.parseDouble(s));
+            } else if (OPERATORS.contains(s)) {
+                if (stack.size() == 1)
+                    throw new IllegalArgumentException(MISSING_OPERAND);
+                double op1 = stack.pop();
+                double op2 = stack.pop();
+                stack.push(applyOperator(s, op1, op2));
+            }
+        }
+
+        if (stack.size() == 1) {
+            res = stack.pop();
+        } else {
+            throw new IllegalArgumentException(MISSING_OPERAND);
+        }
+
+        return res;
+    }
 
     double applyOperator(String op, double d1, double d2) {
         switch (op) {
@@ -203,5 +225,6 @@ class Calculator {
         }
         return -1;
     }
+
 
 }
