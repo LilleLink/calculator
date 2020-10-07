@@ -76,22 +76,52 @@ class Calculator {
                 postFix.add(current);
             } else if (OPERATORS.contains(current)) { // If current is an operator
 
-            } else if (current.equals("(")) {
+                while (!stack.isEmpty()) {
+
+                    if (getPrecedence(stack.peek()) > getPrecedence(current)) {
+                        postFix.add(stack.pop());
+                    } else if (getPrecedence(stack.peek()) == getPrecedence(current)) {
+                        if (getAssociativity(current) == Assoc.LEFT) {
+                            postFix.add(stack.pop());
+                        }
+                    } else if (!stack.peek().equals("(")) {
+                        postFix.add(stack.pop());
+                    }
+
+                }
+
                 stack.push(current);
-            } else if (current.equals(")")) {
+
+            } else if (current.equals("(")) { // If left parenthesis
+
+                stack.push(current);
+
+            } else if (current.equals(")")) { // If right parenthesis
                 while(!stack.peek().equals("(")) {
+                    if (stack.isEmpty()) {
+                        throw new IllegalArgumentException(MISSING_OPERATOR);
+                    }
                     postFix.add(stack.pop());
                 }
+
             }
         }
 
+        while (!stack.isEmpty()) {
+            postFix.add(stack.pop());
+        }
 
-        return null;
+        return postFix;
     }
 
     public boolean isNumber(String s) {
-        return s.equals("0") || s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4") || s.equals("5")
-                || s.equals("6") || s.equals("7") || s.equals("8") || s.equals("9");
+        int nr = 0;
+        try {
+            nr = Integer.parseInt(s);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     int getPrecedence(String op) {
