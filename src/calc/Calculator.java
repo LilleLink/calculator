@@ -74,20 +74,9 @@ class Calculator {
             if (isNumber(current)) {    // If current is a number, add to postfix
                 postFix.add(current);
             } else if (OPERATORS.contains(current)) { // If current is an operator
-                while (!stack.isEmpty()) {
-
-                    if (getPrecedence(stack.peek()) > getPrecedence(current)) {
-                        popToList(stack, postFix);
-                    } else if (getPrecedence(stack.peek()) == getPrecedence(current)) {
-                        if (getAssociativity(current) == Assoc.LEFT) {
-                            popToList(stack, postFix);
-                        }
-                    } else if (!stack.peek().equals("(")) {
-                        popToList(stack, postFix);
-                    }
-
+                while (stack.peek() != null && validForOpWhile(current, stack)) { // Top is an operator, has greater precedence or same precedence and left assoc, and is not left par
+                    popToList(stack, postFix);
                 }
-
                 stack.push(current);
 
             } else if (current.equals("(")) { // If left parenthesis
@@ -96,20 +85,30 @@ class Calculator {
 
             } else if (current.equals(")")) { // If right parenthesis
                 while (!stack.peek().equals("(")) {
+                    postFix.add(stack.pop());
                     if (stack.isEmpty()) {
                         throw new IllegalArgumentException(MISSING_OPERATOR);
                     }
-                    postFix.add(stack.pop());
                 }
-
+                if (stack.peek().equals("(")) {
+                    stack.pop();
+                }
             }
         }
 
         while (!stack.isEmpty()) {
+            if ("()".contains(stack.peek()))
+                throw new IllegalArgumentException(MISSING_OPERATOR);
+            else
             postFix.add(stack.pop());
         }
 
         return postFix;
+    }
+
+    private boolean validForOpWhile(String current, Deque<String> stack) {
+        return OPERATORS.contains(stack.peek()) && !stack.peek().equals("(") && (getPrecedence(stack.peek()) > getPrecedence(current) ||
+                (getPrecedence(stack.peek()) == getPrecedence(current) && getAssociativity(current) == Assoc.LEFT));
     }
 
     private void popToList(Deque<String> stack, List<String> postFix) {
