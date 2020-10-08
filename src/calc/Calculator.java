@@ -61,7 +61,7 @@ class Calculator {
         if (stack.size() == 1) {
             res = stack.pop();
         } else {
-            throw new IllegalArgumentException(MISSING_OPERAND);
+            throw new IllegalArgumentException(MISSING_OPERATOR);
         }
 
         return res;
@@ -124,7 +124,7 @@ class Calculator {
             else
             postFix.add(stack.pop());
         }
-
+        out.println("Result of postfix-conversion: "+postFix);
         return postFix;
     }
 
@@ -181,8 +181,6 @@ class Calculator {
     public List<String> tokenize(String expr) {
         out.println("Tokenizing expression: "+expr);
 
-        //Below does not work
-
         List<String> res = new ArrayList<>();
         char[] exprArr = expr.toCharArray();
         for (int i = 0; i < expr.length(); i++) {
@@ -197,11 +195,6 @@ class Calculator {
                 res.add(String.valueOf(exprArr[i]));
             }
         }
-
-        // Best way:
-        // Start counting if current is numerical, stop when operator. Add to list
-        // Add operator to list
-        // Continue
 
         out.println("Result of tokenization: "+res);
         return res;
