@@ -43,7 +43,7 @@ class Calculator {
     public double evalPostfix(List<String> postfix) {
 
         Deque<Double> stack = new ArrayDeque<>();
-        double res = 0;
+        double res;
 
         for(String s : postfix) {
 
@@ -124,7 +124,7 @@ class Calculator {
             else
             postFix.add(stack.pop());
         }
-        out.println("Result of postfix-conversion: "+postFix);
+        //out.println("Result of postfix-conversion: "+postFix);
         return postFix;
     }
 
@@ -179,7 +179,7 @@ class Calculator {
     // ---------- Tokenize -----------------------
 
     public List<String> tokenize(String expr) {
-        out.println("Tokenizing expression: "+expr);
+        //out.println("Tokenizing expression: "+expr);
 
         List<String> res = new ArrayList<>();
         char[] exprArr = expr.toCharArray();
@@ -196,7 +196,7 @@ class Calculator {
             }
         }
 
-        out.println("Result of tokenization: "+res);
+        //out.println("Result of tokenization: "+res);
         return res;
     }
 
